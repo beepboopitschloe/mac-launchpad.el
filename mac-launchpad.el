@@ -50,7 +50,7 @@
   (interactive)
   (let* ((apps (mac-launchpad/find-mac-apps "/Applications"))
          (to-launch (completing-read "launch: " apps)))
-    (shell-command (format "defaults read %sContents/Info.plist CFBundleIdentifier | xargs open -b" to-launch))))
+    (shell-command (format "defaults read \"%s\"Contents/Info.plist CFBundleIdentifier | xargs open -b" to-launch))))
 
 (global-set-key (kbd "C-c C-l") 'mac-launchpad)
 
