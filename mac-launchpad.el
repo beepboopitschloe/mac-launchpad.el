@@ -41,16 +41,16 @@
 
 (defun mac-launchpad/find-mac-apps (folder)
   (let* ((files (directory-files folder))
-         (without-dots (delete-if (lambda (f) (or (string= "." f) (string= ".." f))) files))
+         (without-dots (cl-delete-if (lambda (f) (or (string= "." f) (string= ".." f))) files))
          (all-files (mapcar (lambda (f) (file-name-as-directory (concat (file-name-as-directory folder) f))) without-dots))
-         (result (delete-if-not (lambda (s) (mac-launchpad/string-ends-with s ".app/")) all-files)))
+         (result (cl-delete-if-not (lambda (s) (mac-launchpad/string-ends-with s ".app/")) all-files)))
     result))
 
 (defun mac-launchpad ()
   (interactive)
   (let* ((apps (mac-launchpad/find-mac-apps "/Applications"))
          (to-launch (completing-read "launch: " apps)))
-    (shell-command (format "open %s" to-launch))))
+    (shell-command (format "defaults read %sContents/Info.plist CFBundleIdentifier | xargs open -b" to-launch))))
 
 (global-set-key (kbd "C-c C-l") 'mac-launchpad)
 
